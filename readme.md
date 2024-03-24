@@ -56,8 +56,16 @@ Para correr el programa de husky-init el proyecto necesita ser un repo
 
 ```
   git init
-  npx husky-init && npm
+  npx husky-init && npm install
 ```
 
 - pre-commit
 - pre-push
+
+```
+  npm install --save-dev @commitlint/config-conventional
+  npm install --save-dev @commitlint/cli
+
+  echo "module.exports = {extends: ['@commitlint/config-contentional']}" > commitlint.config.js
+  npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
+```
