@@ -69,3 +69,17 @@ Para correr el programa de husky-init el proyecto necesita ser un repo
   echo "module.exports = {extends: ['@commitlint/config-contentional']}" > commitlint.config.js
   npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
 ```
+
+## Path alias
+
+```
+  npm install --save-dev vite-tsconfig-paths // dtypes
+```
+
+## Utilidades
+
+## Check
+
+- isNullOrUndefined: Es una función que recibe un valor X de tipo unknown y devolvemos un booleano (predicado): True si el value es nulo o undefined, false en caso contrario
+
+- isObject: Es una función que recibe un valor X unknown y devuelve un booleano true si el typeOf es object

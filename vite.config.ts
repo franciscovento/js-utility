@@ -10,6 +10,11 @@ export default defineConfig({
       fileName: 'my-lib'
     }
   },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, './src')
+    }
+  },
   plugins: [
     dts({outDir: 'dist'})
   ]
