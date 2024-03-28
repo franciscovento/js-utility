@@ -74,6 +74,7 @@ Para correr el programa de husky-init el proyecto necesita ser un repo
 
 ```
   npm install --save-dev vite-tsconfig-paths // dtypes
+  npm install --save-dev vitest
 ```
 
 ## Utilidades
@@ -83,3 +84,24 @@ Para correr el programa de husky-init el proyecto necesita ser un repo
 - isNullOrUndefined: Es una función que recibe un valor X de tipo unknown y devolvemos un booleano (predicado): True si el value es nulo o undefined, false en caso contrario
 
 - isObject: Es una función que recibe un valor X unknown y devuelve un booleano true si el typeOf es object
+
+## String
+
+- Includes --> Una función que recibe un string y un value a buscar dentro de ese string. Devuelve booleano si el valor encontrado esta en el string
+- Capitalize (hola -> Hola)
+- reverse
+- equalsIgnoreCase: Es una función que recibe dos strings y compara si son iguales aplicando lowercase
+
+## Utils
+
+- canUseDom: Devuelve true si puede utilizarse el DOM (revisa si el objeto window esta definido)
+
+## Arrays
+
+- arraylable: recibe un argumento (genérico o nulo). La función devuelve el mismo array value es un array valido y si el elemento es un no es arraylable devuelve un array vacío [].
+- getById
+- remove item/s
+- find
+- getIndexById
+- sum
+- sumBy
