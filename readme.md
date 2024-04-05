@@ -105,3 +105,11 @@ Para correr el programa de husky-init el proyecto necesita ser un repo
 - getIndexById
 - sum
 - sumBy
+
+## Stryker
+
+tests mutations
+
+## Github Workflows
+
+Los workflows se definan mediante archivos .yml
