@@ -11,7 +11,8 @@ describe('isEmpty', () => {
     [{ a: 1 }, false],
     [0, true],
     [{}, true],
-    [[], true]
+    [[], true],
+    ["", true]
   ])('isEmpty(%j) should return %j', (args, expected) => {
     expect(isEmpty(args)).toBe(expected)
   })
