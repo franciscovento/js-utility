@@ -7,26 +7,26 @@
 - Muchas tecnologías / frameworks
 
 ```
-  npm create vite@latest
-  yarn create vite@latest
+    npm create vite@latest
+    yarn create vite@latest
 ```
 
-## Three-shaking
+## Tree-shaking
 
 > Live code inclusion
 
 Es una forma de "eliminar" el código muerto / no utilizado
 
 ```
-  import button from 'awesome-lib'
-  import {button} from 'awesome-lib'
-  import * as AwesomeLib from 'awesome-lib'
+    import Button from 'awesome-lib'
+    import {Button} from 'awesome-lib'
+    import * as AwesomeLib from 'awesome-lib'
 ```
 
-## Todo paquete que se respete
+## Todo paquete que se respeta
 
-- EsLint .eslintrc --> npm init @eslint/config (seguir pasos)
-- Prettier .prettier --> npm install --save-dev prettier
+- Eslint .eslintrc --> npm init @eslint/config (seguir pasos)
+- Prettier .prettierrc --> yarn add -D prettier (https://prettier.io/docs/en/plugins)
 - Husky + commitlint (commits semánticos)
 - Versionado semántico
 - Tests
@@ -35,46 +35,104 @@ Es una forma de "eliminar" el código muerto / no utilizado
 ## Dependencias a instalar
 
 ```
-  npm install --save-dev @types/node vite-plugin-dts
+    yarn add -D @types/node vite-plugin-dts
 ```
 
 ## Vite plugin dts
 
-Cuando queremos compartir librerías o paquetes que se escribieron en TS se necesita incluir un archivo de definición (.dts) de forma separada a nuestro bundle (index.js, bundle.js) esto nos ayudará a ver los tipos de nuestra función que estemos consumiendo de nuestro paquete.
+Cuando queremos compartir librerias o paquetes que se escribieron en TS se necesita incluir archivos de definición
+(.d.ts) de forma separada a nuestro bundle (index.js, bundle.js) esto nos ayudará a ver los tipos de nuestra función que estemos consumiendo de nuestro paquete.
 
-index.d.ts: archivo de definición de tipos
+index.d.ts: Archivos de definición de tipos
 
 ## Bundling
 
-Para crear una aplicación que sea distribuible se deben realizar ciertas configuraciones en el bundling final
+Para crear una aplicación que sea distribuible se deben realizar ciertas configuraciones en el bundle final
+
+```typescript
+//vite.config.ts
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
+
+export default defineConfig({
+  build: {
+    lib: {
+      entry: resolve(__dirname, 'src/index.ts'),
+      name: 'my-lib',
+      fileName: 'my-lib'
+    }
+  },
+  plugins: [dts({ outDir: 'dist' })]
+})
+```
+
+```json
+    // package json
+    // remover private:true
+  "main": "./dist/my-lib.umd.cjs",
+  "exports": {
+    ".": {
+      "import": "./dist/my-lib.js",
+      "require": "./dist/my-lib.umd.cjs"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "files": ["dist"],
+```
+
+```
+    npm init @eslint/config
+    yarn add -D prettier
+```
+
+.prettierrc
+
+```
+{
+  "trailingComma": "none",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true
+}
+
+```
+
+Extender prettier del eslint base typescript:
+https://www.npmjs.com/package/eslint-config-standard-typescript-prettier
 
 ## Husky
 
-Una herramienta que te ayuda a correr scripts en diferentes estadios de la aplicación
+Una herramienta que te ayuda a correr scripts en diferentes estadios de la aplicacion
 
-Para correr el programa de husky-init el proyecto necesita ser un repo
-
-```
-  git init
-  npx husky-init && npm install
-```
-
-- pre-commit
-- pre-push
+Para instalar o correr el programa husky-init el proyecto necesita ser un repo
 
 ```
-  npm install --save-dev @commitlint/config-conventional
-  npm install --save-dev @commitlint/cli
-
-  echo "module.exports = {extends: ['@commitlint/config-contentional']}" > commitlint.config.js
-  npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
+    git init
+    npx husky-init && yarn o bien npm install
+    npx husky add .husky/pre-commit "npm run lint"
 ```
 
-## Path alias
+- pre-commit (ejecutar scripts antes de efectuar un commit)
+- pre-push (ejecutar scripts antes de hacer un push)
+
+Commitlint documentation:
+https://github.com/conventional-changelog/commitlint
+
+```bash
+    yarn add -D @commitlint/config-conventional @commitlint/cli
+    echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.cjs
+    npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
+    npx husky add .husky/pre-push "npm run test && npm run build"
+```
+
+### Path Alias
 
 ```
-  npm install --save-dev vite-tsconfig-paths // dtypes
-  npm install --save-dev vitest
+  yarn add -D vite-tsconfig-paths // dtypes
+  yarn add -D vitest
 ```
 
 ## Utilidades
@@ -82,34 +140,73 @@ Para correr el programa de husky-init el proyecto necesita ser un repo
 ## Check
 
 - isNullOrUndefined: Es una función que recibe un valor X de tipo unknown y devolvemos un booleano (predicado): True si el value es nulo o undefined, false en caso contrario
-
-- isObject: Es una función que recibe un valor X unknown y devuelve un booleano true si el typeOf es object
+- isObject: Es una función que recibe un valor X unkwnown y devuleve un booleano true si el typeOf es object
 
 ## String
 
-- Includes --> Una función que recibe un string y un value a buscar dentro de ese string. Devuelve booleano si el valor encontrado esta en el string
+- Includes -> Una función que recibe un string y un value a buscar dentro de ese string. Devuelve un booleano si el valor es encontrado en el string
 - Capitalize (hola -> Hola)
 - reverse
-- equalsIgnoreCase: Es una función que recibe dos strings y compara si son iguales aplicando lowercase
-
-## Utils
-
-- canUseDom: Devuelve true si puede utilizarse el DOM (revisa si el objeto window esta definido)
+- equalsIgnoreCase: Es una función que recibe 2 strings y compara si son iguales (aplicando lowercase)
 
 ## Arrays
 
-- arraylable: recibe un argumento (genérico o nulo). La función devuelve el mismo array value es un array valido y si el elemento es un no es arraylable devuelve un array vacío [].
-- getById
-- remove item/s
-- find
-- getIndexById
+- arraylable: Recibe un argumento (generico o nulo). La función devuelve el mismo array value si es un array válido y si el elemento es un elemento no arrayleable devuelve un array []
 - sum
 - sumBy
+- getById
+- getIndexById
+- removeItem/s
 
-## Stryker
+## Utils
 
-tests mutations
+- canUseDom: Devuelve true si puede utilizarse el dom (window)
 
-## Github Workflows
+### Timing
 
-Los workflows se definan mediante archivos .yml
+- debounce
+- throttle
+
+### Pendientes de la lib
+
+- Funciones de timing
+- Funciones de logging
+- Funciones de strings
+- Excluir test de la build
+- Flujo de Testing en commit
+- Yalc
+- YAML en github actions
+- Mutation testing?
+
+### Mutation testing
+
+El coverage nos acerca al estándar de calidad pero no garantiza que nuestro código sea robusto
+
+En las pruebas de mutación se introducen cambios en nuestro código productivo luego, se vuelven a correr las pruebas existentes pero con el codigo "mutado"
+
+lo que se espera es que nuestras prueban fallen
+
+"Stryker" introducir "mutantes" en el código productivo
+Si la prueba pasa -> el mutante sobrevive (X)
+
+yarn add -D @stryker-mutator/core
+yarn add -D @stryker-mutator/vitest-runner
+npm init stryker
+
+### Github Workflow
+
+Los workflows se definen mediante archivos .yml
+
+ej:
+Cuando se haga un PULL REQUEST -> hacer una build de mi aplicación + probar en la versión 18.x de node si lo tests pasan
+
+YALC / NPM LINK
+
+npm i -g yalc
+yalc publish -> genera una versión de prueba de tu paquete
+"yalc:publish": "npm run build && yalc publish"
+
+### Publicación de paquetes
+
+1. npm publish
+2. npm adduser

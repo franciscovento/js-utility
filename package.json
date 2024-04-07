@@ -10,7 +10,7 @@
     }
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org"
   },
   "files": [
     "dist"
@@ -24,7 +24,8 @@
     "prepare": "husky install",
     "test": "vitest run --coverage",
     "test:watch": "vitest --watch",
-    "test:mutation": "stryker run"
+    "test:mutation": "stryker run",
+    "yalc:publish": "npm run build && yalc publish"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.2.1",

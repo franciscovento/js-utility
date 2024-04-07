@@ -9,6 +9,8 @@ describe('isEmpty', () => {
     [undefined, true],
     [[1, 2, 3, 4], false],
     [{ a: 1 }, false],
+    [true, false],
+    [false, false],
     [0, true],
     [{}, true],
     [[], true],
