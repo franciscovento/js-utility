@@ -1,212 +1,50 @@
-# Pasos para crear nuestra lib
+# Js - Utility - venfran
 
-## Vite
+Esta librería proporciona una serie de funciones útiles para trabajar con strings, arrays, validación de datos, comprobación de tipos y manejo de temporizadores en JavaScript.
 
-- "rápido"
-- rollup
-- Muchas tecnologías / frameworks
+## Instalación
 
-```
-    npm create vite@latest
-    yarn create vite@latest
-```
-
-## Tree-shaking
-
-> Live code inclusion
-
-Es una forma de "eliminar" el código muerto / no utilizado
-
-```
-    import Button from 'awesome-lib'
-    import {Button} from 'awesome-lib'
-    import * as AwesomeLib from 'awesome-lib'
-```
-
-## Todo paquete que se respeta
-
-- Eslint .eslintrc --> npm init @eslint/config (seguir pasos)
-- Prettier .prettierrc --> yarn add -D prettier (https://prettier.io/docs/en/plugins)
-- Husky + commitlint (commits semánticos)
-- Versionado semántico
-- Tests
-- Readme
-
-## Dependencias a instalar
-
-```
-    yarn add -D @types/node vite-plugin-dts
-```
-
-## Vite plugin dts
-
-Cuando queremos compartir librerias o paquetes que se escribieron en TS se necesita incluir archivos de definición
-(.d.ts) de forma separada a nuestro bundle (index.js, bundle.js) esto nos ayudará a ver los tipos de nuestra función que estemos consumiendo de nuestro paquete.
-
-index.d.ts: Archivos de definición de tipos
-
-## Bundling
-
-Para crear una aplicación que sea distribuible se deben realizar ciertas configuraciones en el bundle final
-
-```typescript
-//vite.config.ts
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
-
-export default defineConfig({
-  build: {
-    lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'my-lib',
-      fileName: 'my-lib'
-    }
-  },
-  plugins: [dts({ outDir: 'dist' })]
-})
-```
-
-```json
-    // package json
-    // remover private:true
-  "main": "./dist/my-lib.umd.cjs",
-  "exports": {
-    ".": {
-      "import": "./dist/my-lib.js",
-      "require": "./dist/my-lib.umd.cjs"
-    }
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
-  "files": ["dist"],
-```
-
-```
-    npm init @eslint/config
-    yarn add -D prettier
-```
-
-.prettierrc
-
-```
-{
-  "trailingComma": "none",
-  "tabWidth": 2,
-  "semi": false,
-  "singleQuote": true
-}
-
-```
-
-Extender prettier del eslint base typescript:
-https://www.npmjs.com/package/eslint-config-standard-typescript-prettier
-
-## Husky
-
-Una herramienta que te ayuda a correr scripts en diferentes estadios de la aplicacion
-
-Para instalar o correr el programa husky-init el proyecto necesita ser un repo
-
-```
-    git init
-    npx husky-init && yarn o bien npm install
-    npx husky add .husky/pre-commit "npm run lint"
-```
-
-- pre-commit (ejecutar scripts antes de efectuar un commit)
-- pre-push (ejecutar scripts antes de hacer un push)
-
-Commitlint documentation:
-https://github.com/conventional-changelog/commitlint
+Puedes instalar esta librería utilizando npm. Ejecuta el siguiente comando en tu terminal:
 
 ```bash
-    yarn add -D @commitlint/config-conventional @commitlint/cli
-    echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.cjs
-    npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
-    npx husky add .husky/pre-push "npm run test && npm run build"
+npm install venfran-js-utils
 ```
 
-### Path Alias
+## Funciones disponibles
 
-```
-  yarn add -D vite-tsconfig-paths // dtypes
-  yarn add -D vitest
-```
+### Strings
 
-## Utilidades
+- **capitalize(str: string): string**: Devuelve una cadena con la primera letra en mayúscula.
+- **includes(str: string, substring: string): boolean**: Comprueba si una cadena incluye otra subcadena.
 
-## Check
+### Arrays
 
-- isNullOrUndefined: Es una función que recibe un valor X de tipo unknown y devolvemos un booleano (predicado): True si el value es nulo o undefined, false en caso contrario
-- isObject: Es una función que recibe un valor X unkwnown y devuleve un booleano true si el typeOf es object
+- **arrayable(item: any): boolean**: Comprueba si un elemento es iterable.
+- **sum(array: Array<number>): number**: Calcula la suma de los elementos en un array de números.
+- **sumBy(array: Array<any>, accessor: Function): number**: Calcula la suma de los elementos en un array aplicando un accessor a cada elemento.
 
-## String
+### Check
 
-- Includes -> Una función que recibe un string y un value a buscar dentro de ese string. Devuelve un booleano si el valor es encontrado en el string
-- Capitalize (hola -> Hola)
-- reverse
-- equalsIgnoreCase: Es una función que recibe 2 strings y compara si son iguales (aplicando lowercase)
-
-## Arrays
-
-- arraylable: Recibe un argumento (generico o nulo). La función devuelve el mismo array value si es un array válido y si el elemento es un elemento no arrayleable devuelve un array []
-- sum
-- sumBy
-- getById
-- getIndexById
-- removeItem/s
-
-## Utils
-
-- canUseDom: Devuelve true si puede utilizarse el dom (window)
+- **isEmpty(value: unknown): boolean**: Comprueba si un valor es vacío (null, undefined, cadena vacía, array vacío, objeto vacío).
+- **isFunction(value: unknown): boolean**: Comprueba si un valor es una función.
+- **isNullOrUndefined(value: unknown): boolean**: Comprueba si un valor es nulo o indefinido.
+- **isNumber(value: unknown): boolean**: Comprueba si un valor es un número.
+- **isObject(value: unknown): boolean**: Comprueba si un valor es un objeto.
+- **isObjectLike(value: unknown): boolean**: Comprueba si un valor es un objeto similar.
+- **isString(value: unknown): boolean**: Comprueba si un valor es una cadena.
 
 ### Timing
 
-- debounce
-- throttle
+- **throttle(func: Function, delay: number): Function**: Devuelve una función que, cuando sea invocada repetidamente, solo permitirá que se ejecute una vez cada `delay` milisegundos.
+- **debounce(func: Function, delay: number): Function**: Devuelve una función que retrasa la ejecución de `func` hasta que haya pasado `delay` milisegundos desde la última vez que se llamó a la función devuelta.
 
-### Pendientes de la lib
+### Validators
 
-- Funciones de timing
-- Funciones de logging
-- Funciones de strings
-- Excluir test de la build
-- Flujo de Testing en commit
-- Yalc
-- YAML en github actions
-- Mutation testing?
+- **isEmail(email: string): boolean**: Comprueba si una cadena es una dirección de correo electrónico válida.
+- **isValidAge(age: number): boolean**: Comprueba si una edad es válida (mayor o igual que 0).
+- **isValidPhoneNumber(phoneNumber: string): boolean**: Comprueba si una cadena es un número de teléfono válido.
+- **isValidUrl(url: string): boolean**: Comprueba si una cadena es una URL válida.
 
-### Mutation testing
+---
 
-El coverage nos acerca al estándar de calidad pero no garantiza que nuestro código sea robusto
-
-En las pruebas de mutación se introducen cambios en nuestro código productivo luego, se vuelven a correr las pruebas existentes pero con el codigo "mutado"
-
-lo que se espera es que nuestras prueban fallen
-
-"Stryker" introducir "mutantes" en el código productivo
-Si la prueba pasa -> el mutante sobrevive (X)
-
-yarn add -D @stryker-mutator/core
-yarn add -D @stryker-mutator/vitest-runner
-npm init stryker
-
-### Github Workflow
-
-Los workflows se definen mediante archivos .yml
-
-ej:
-Cuando se haga un PULL REQUEST -> hacer una build de mi aplicación + probar en la versión 18.x de node si lo tests pasan
-
-YALC / NPM LINK
-
-npm i -g yalc
-yalc publish -> genera una versión de prueba de tu paquete
-"yalc:publish": "npm run build && yalc publish"
-
-### Publicación de paquetes
-
-1. npm publish
-2. npm adduser
+Si necesitas más información sobre cómo utilizar cada función, no dudes en consultar la documentación de cada una de ellas o en contactar a los desarrolladores de esta librería.
